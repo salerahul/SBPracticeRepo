@@ -32,5 +32,22 @@ public class ProductServiceControllerTest extends AbstractTest {
 	      Product[] productlist = super.mapFromJson(content, Product[].class);
 	      assertTrue(productlist.length > 0);
 	}
+	
+	@Test
+	   public void createProduct() throws Exception {
+	      String uri = "/products";
+	      Product product = new Product();
+	      product.setId("3");
+	      product.setName("Ginger");
+	      String inputJson = super.mapToJson(product);
+	      MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(uri)
+	         .contentType(MediaType.APPLICATION_JSON_VALUE)
+	         .content(inputJson)).andReturn();
+	      
+	      int status = mvcResult.getResponse().getStatus();
+	      assertEquals(201, status);
+	      String content = mvcResult.getResponse().getContentAsString();
+	      assertEquals(content, "Product is created successfully");
+	   }
 
 }
